@@ -1,15 +1,11 @@
 const express = require('express');
 const cors = require('cors');
 const nodemailer = require('nodemailer');
-const multer = require('multer'); // Handles the incoming PDF file binary
-require('dotenv').config();
+require('dotenv').config(); // Load environment variables safely
 
 const app = express();
 app.use(cors());
-app.use(express.json());
-
-// Setup Multer memory storage (holds the PDF in memory temporarily without saving to disk)
-const upload = multer({ storage: multer.memoryStorage() });
+app.use(express.json()); // Essential to read incoming JSON form text payload
 
 // Setup Email Transporter
 const transporter = nodemailer.createTransport({
@@ -59,9 +55,8 @@ app.post('/api/contact', (req, res) => {
     });
 });
 
-// Endpoint 3: Admission Form (Updated for Vercel Serverless Stability)
+// Endpoint 3: Admission Form (100% Clean JSON Version for Vercel)
 app.post('/api/admission', (req, res) => {
-    // We accept normal JSON data instead of a file upload
     const { studentName, studentEmail, studentPhone, course } = req.body; 
 
     const mailOptions = {
